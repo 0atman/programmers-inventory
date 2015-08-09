@@ -5,13 +5,34 @@ from requests import get
 import tortilla
 
 
-def dashboard(request, username):
-    auth_token = "d8e50e1990c4ab6d50015e0f36c2db865bf5c5bf"
-    github = tortilla.wrap('https://api.github.com', cache_lifetime=5)
-    github.config.headers.Authorization = "token " + auth_token
+from django.shortcuts import render_to_response
 
+
+def with_template(template):
+    """
+    A decorator to render the view with a template. The view just
+    returns a contect dictionary. eg:
+
+    @with_template('index.html')
+    def index_view(request):
+        return {"name": "dave"}
+
+    Source: https://gist.github.com/0atman/1912bfd62f8dbd93cfa5
+    """
+    def template_decorator(view):
+        def view_wrapper(*args, **kwargs):
+            return render_to_response(
+                template,
+                view(*args, **kwargs)
+            )
+        return view_wrapper
+    return template_decorator
+
+
+@with_template('index.html')
+def dashboard(request, username):
+    github = tortilla.wrap('https://api.github.com', cache_lifetime=60)
     github_user = github.users.get(username)
-    "https://api.stackexchange.com/2.2/users/333294?site=stackoverflow"
     repos =  github.users(username).repos.get()
     skills_count = dict(Counter([repo['language'] for repo in repos]))
     Skill = namedtuple('Skill', "name level font_name")
@@ -43,4 +64,4 @@ def dashboard(request, username):
         skills = skills[:4]
 
     gists = github.users(username).gists.get()
-    return render(request, 'index.html', locals())
+    return locals()

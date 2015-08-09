@@ -45,7 +45,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">{{ github_user.name }}</a>
+          <a class="navbar-brand" href="#">Character Sheet for {{ github_user.name }}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -67,14 +67,14 @@
 
             <li><a href="https://en.wikipedia.org/wiki/Special:Search?search={{ github_user.company }}">{{ github_user.company }}</a></li>
             <li><a href="https://www.google.com/maps?hl=en&q={{ github_user.location }}">{{ github_user.location }}</a></li>
-            <li class="active"><a>Tools ({{ gists | length}})<span class="sr-only">(current)</span></a></li>
+            <li title="Gists" class="active"><a>Tools ({{ gists | length}})<span class="sr-only">(current)</span></a></li>
             {% for gist in gists %}
             <li><a title="{{ gist.description }}" href="{{ gist.html_url }}">{{ gist.files.keys.0 }}</a></li>
             {% endfor %}
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Skills</h1>
+          <h1 title="Aggregate languages used across all repos" class="page-header">Skills</h1>
 
           <div class="row placeholders">
               {% for skill in skills %}
@@ -87,16 +87,16 @@
             {% endfor %}
           </div>
 
-          <h2 class="sub-header">Current Quests</h2>
+          <h2 title="Repos" class="sub-header">Current Quests</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Level</th>
-                  <th>Skill required</th>
-                  <th>Party Size</th>
-                  <th>Reward</th>
+                  <th title="Open Issues">Level</th>
+                  <th title="Languages used in repo">Skill Trained</th>
+                  <th title="Number of Forks">Party Size</th>
+                  <th title="Number of Watchers on Github">Reward</th>
                 </tr>
               </thead>
               <tbody>
