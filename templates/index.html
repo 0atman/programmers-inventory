@@ -11,7 +11,12 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Dashboard for {{ github_user.name}}</title>
+
+    <!-- in your header -->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/89f2f44ba07ea3fff7e561c2142813b278c2d6c6/devicon.min.css">
+
+
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -40,18 +45,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">{{ github_user.name }}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+            <li><a href="http://{{ github_user.blog }}">Blog</a></li>
+            <li><a href="mailto:{{ github_user.email }}">Email</a></li>
+            <li><a href="{{ github_user.html_url}}">View on Github</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
+
         </div>
       </div>
     </nav>
@@ -63,34 +65,26 @@
             <li><image src="{{ github_user.avatar_url}}" width=230 height=230></li>
             <li class="active"><a>{{ github_user.login }} <span class="sr-only">(current)</span></a></li>
 
-            <li><a>{{ github_user.company }}</a></li>
-            <li><a>{{ github_user.location }}</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Special:Search?search={{ github_user.company }}">{{ github_user.company }}</a></li>
+            <li><a href="https://www.google.com/maps?hl=en&q={{ github_user.location }}">{{ github_user.location }}</a></li>
+            <li class="active"><a>Tools ({{ gists | length}})<span class="sr-only">(current)</span></a></li>
+            {% for gist in gists %}
+            <li><a title="{{ gist.description }}" href="{{ gist.html_url }}">{{ gist.files.keys.0 }}</a></li>
+            {% endfor %}
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+          <h1 class="page-header">Skills</h1>
 
           <div class="row placeholders">
+              {% for skill in skills %}
             <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+                <!-- in your body -->
+                <h2><i class="devicon-{{ skill.font_name | slugify }}-plain"></i></h2>
+              <h4>{{ skill.name | upper }}</h4>
+              <span class="text-muted">{{ skill.level }}</span>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
+            {% endfor %}
           </div>
 
           <h2 class="sub-header">Current Quests</h2>
@@ -102,26 +96,19 @@
                   <th>Level</th>
                   <th>Skill required</th>
                   <th>Party Size</th>
-                  <th>Header</th>
+                  <th>Reward</th>
                 </tr>
               </thead>
               <tbody>
                   {% for repo in repos %}
                 <tr>
                   <td>{{ repo.name }}</td>
-                  <td>Lorem</td>
+                  <td>{{ repo.open_issues }}</td>
                   <td>{{ repo.language }}</td>
                   <td>{{ repo.forks }}</td>
-                  <td>sit</td>
+                  <td>{{ repo.watchers}}</td>
                 </tr>
                 {% endfor %}
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
               </tbody>
             </table>
           </div>
