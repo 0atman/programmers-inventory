@@ -50,7 +50,8 @@ def dashboard(request, username):
         "VimL": "linux",
         "Haskell": "linux",
         "Clojure": "linux",
-        "Elixir": "linux"
+        "Elixir": "linux",
+        "Arduino": "linux"
     }
     unsorted_skills = [
         Skill(name=skill[0], level=skill[1], font_name=icon_replacements.get(skill[0], skill[0]))
