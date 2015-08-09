@@ -25,8 +25,6 @@ SECRET_KEY = '^0iem!_89pzmlk_7d9)zc9+-)x_r__@(2cfc7=4m)x*@u34u6t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -72,15 +70,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'inventory.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+import os
+
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static'),
+)
 
 
 # Internationalization
@@ -101,3 +105,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'error_file': {
+            'level': 'WARNING',
+            'filename': os.path.join(BASE_DIR, 'django-error.log'),
+            'class':'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1 * 1024 * 1024,
+            'backupCount': 2
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['error_file'],
+            'level': 'WARNING',
+            'propagate': True
+        }
+    }
+}
